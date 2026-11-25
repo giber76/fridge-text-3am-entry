@@ -21,6 +21,12 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const LINE =
   "3am. You're eating shredded cheese over my light like a raccoon in a trench coat. I respect it. I also logged it.";
 
+// The gate refuses anything over 140 characters: fail loudly here
+// rather than shipping a line the scorer would mark invalid.
+if ([...LINE].length > 140) {
+  throw new Error(`entry line is ${[...LINE].length} characters, over the 140 cap`);
+}
+
 const dest = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
 // In the grader /output is a mount point: create it when it is missing,
